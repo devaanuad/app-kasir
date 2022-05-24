@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\userController;
+use App\Http\Controllers\Kasir\transaksiController;
 use App\Http\Controllers\Manager\mejaController;
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,12 @@ Route::prefix('manager')->group(function () {
     Route::get('/menu/{id}', [mejaController::class, 'show']);
     Route::put('/menu/update/{id}', [mejaController::class, 'update']);
     Route::delete('/menu/{id}', [mejaController::class, 'delete']);
+});
+
+Route::prefix('kasir')->group(function () {
+    Route::get('/transaksi', [transaksiController::class, 'index']);
+    Route::post('/transaksi/create', [transaksiController::class, 'store']);
+    Route::get('/transaksi/{id}', [transaksiController::class, 'show']);
+    Route::put('/transaksi/update/{id}', [transaksiController::class, 'update']);
+    Route::delete('/transaksi/{id}', [transaksiController::class, 'destroy']);
 });

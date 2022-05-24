@@ -17,11 +17,11 @@ class Meja extends Model
 
     public function transaksi()
     {
-        return $this->hasMany(Transaksi::class, 'id_meja');
+        return $this->hasMany(Transaksi::class, 'meja_id');
     }
 
     public function detail_transaksi()
     {
-        return $this->hasMany(Detail_transaksi::class, 'id_meja');
+        return $this->hasMany(Detail_transaksi::class, 'meja_id');
     }
 }
