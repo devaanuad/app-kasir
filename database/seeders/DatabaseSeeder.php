@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            MenuSeeder::class
+            MenuSeeder::class,
+            MejaSeeder::class
         ]);
 
         User::factory(3)->create();

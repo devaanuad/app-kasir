@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class meja extends Model
+class Meja extends Model
 {
     use HasFactory;
 
@@ -14,4 +14,14 @@ class meja extends Model
         'keterangan',
         'status',
     ];
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id_meja');
+    }
+
+    public function detail_transaksi()
+    {
+        return $this->hasMany(Detail_transaksi::class, 'id_meja');
+    }
 }
