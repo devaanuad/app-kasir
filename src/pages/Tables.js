@@ -43,6 +43,7 @@ function Tables() {
   const resultsPerPage = 10
   const totalResults = response.length
 
+
   // pagination change control
   function onPageChangeTable1(p) {
     setPageTable1(p)

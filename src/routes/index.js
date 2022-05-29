@@ -12,7 +12,7 @@ const Page404 = lazy(() => import('../pages/404'))
 const Blank = lazy(() => import('../pages/Blank'))
 
 const admin_dashboard = lazy(() => import('../pages/admin/dashboard'))
-
+const admin_user = lazy(() => import('../pages/admin/user'))
 /**
  * ⚠ These are internal routes!
  * They will be rendered inside the app, using the default `containers/Layout`.
@@ -60,9 +60,15 @@ const routes = [
     path: '/blank',
     component: Blank,
   },
+
+  // path for admin
   {
     path: '/admin/dashboard',
     component: admin_dashboard,
+  },
+  {
+    path: '/admin/user',
+    component: admin_user,
   },
 ]
 
