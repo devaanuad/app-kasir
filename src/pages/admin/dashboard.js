@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import InfoCard from '../../components/Cards/InfoCard'
-import PageTitle from '../../components/Typography/PageTitle'
-import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../../icons'
-import RoundIcon from '../../components/RoundIcon'
-
+import React, { useState, useEffect } from "react";
+import InfoCard from "../../components/Cards/InfoCard";
+import PageTitle from "../../components/Typography/PageTitle";
+import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from "../../icons";
+import RoundIcon from "../../components/RoundIcon";
 
 function Dashboard() {
-
-
   return (
     <>
       <PageTitle>Dashboard Admin</PageTitle>
@@ -49,10 +46,8 @@ function Dashboard() {
           />
         </InfoCard>
       </div>
-
-
     </>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;
