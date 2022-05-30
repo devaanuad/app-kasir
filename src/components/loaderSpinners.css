@@ -1,0 +1,44 @@
+/* To center the spinner*/
+.pos-center {
+padding-top: 50px;
+padding-bottom: 50px;
+margin-left: 500px;
+  }
+
+  @media screen and (max-width: 450px) {
+    .pos-center {
+      margin-left: 165px;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .pos-center {
+      margin-left: 210px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .pos-center {
+      margin-left: 350px;
+    }
+  }
+
+  
+  .loader {
+      
+    border: 10px solid #1A1C23;
+    border-top: 10px solid #090909;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

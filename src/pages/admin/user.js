@@ -16,6 +16,7 @@ import {
 } from '@windmill/react-ui'
 import { EditIcon, TrashIcon } from '../../icons'
 import axios from 'axios'
+import "../../components/loaderSpinners.css";
 
 
 
@@ -24,6 +25,7 @@ function User() {
     const [users, setUsers] = useState([]);
     const [pageTable2, setPageTable2] = useState(1)
     const [dataTable2, setDataTable2] = useState([])
+    const [loading, setLoading] = useState(false)
 
     // pagination setup
     const resultsPerPage = 10
@@ -33,11 +35,17 @@ function User() {
     function onPageChangeTable2(p) {
     setPageTable2(p)
     }
-  
-    // dapetin data user lalu set ke state setUsers
-    useEffect( async () => {
+    
+    const getUsers = async () => {
       const response = await axios.get("http://localhost:8000/api/admin/user");
       setUsers(response.data.data);
+      setLoading(true);
+    };
+
+
+    // dapetin data user  dari function getUsers lalu set ke state setUsers
+    useEffect(() => {
+      getUsers()
     }, [])
 
     // ketika ada perubahan di state user ,maka set data baru ke state setDataTable2
@@ -65,8 +73,8 @@ function User() {
           <TableCell>Actions</TableCell>
         </tr>
       </TableHeader>
+      { loading ? dataTable2.map((user, i) => (
       <TableBody>
-        {dataTable2.map((user, i) => (
           <TableRow key={i}>
 
             <TableCell>
@@ -93,8 +101,12 @@ function User() {
               </div>
             </TableCell>
           </TableRow>
-        ))}
       </TableBody>
+      )) : (    
+        <div className="pos-center">
+        <div className="loader"></div>
+        </div>
+     )}
     </Table>
     <TableFooter>
       <Pagination
