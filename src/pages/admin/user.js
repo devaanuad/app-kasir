@@ -27,6 +27,8 @@ function User() {
     const [dataTable2, setDataTable2] = useState([])
     const [loading, setLoading] = useState(false)
 
+    // for search nya
+    const [search, setSearch] = useState('')
     // pagination setup
     const resultsPerPage = 10
     const totalResults = users.length
@@ -57,13 +59,27 @@ function User() {
   
     // ketika ada perubahan di state dataTable2, maka render data baru yang digunakan untuk pagination mapping
     useEffect(() => {
-      setDataTable2(users.slice((pageTable2 - 1) * resultsPerPage, pageTable2 * resultsPerPage))
+        setDataTable2(users.slice((pageTable2 - 1) * resultsPerPage, pageTable2 * resultsPerPage))
     }, [pageTable2])
 
+    // Jika ada perubahan di state search ,maka tampilkan data full (tanpa pagination) untuk di filter
+    useEffect(() => {
+      if (search !== "") {
+        setDataTable2(users.filter(user => 
+          user.name.toLowerCase().includes(search.toLowerCase()) ||
+          user.email.toLowerCase().includes(search.toLowerCase()) 
+          ))
+      } else if(search === "") {
+        setDataTable2(users.slice((pageTable2 - 1) * resultsPerPage, pageTable2 * resultsPerPage))
+      }
+    }, [search])
 
   return (
     <>
  <PageTitle>Data User</PageTitle>
+ <input type="text" onChange={( event ) => {
+  setSearch(event.target.value)
+ }}/>
     <TableContainer className="mb-8">
     <Table>
       <TableHeader>
