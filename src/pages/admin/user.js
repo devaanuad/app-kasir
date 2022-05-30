@@ -15,9 +15,6 @@ import {
   Pagination,
 } from '@windmill/react-ui'
 import { EditIcon, TrashIcon } from '../../icons'
-import response from '../../utils/demo/tableData'
-
-
 import axios from 'axios'
 
 
@@ -28,34 +25,34 @@ function User() {
     const [pageTable2, setPageTable2] = useState(1)
     const [dataTable2, setDataTable2] = useState([])
 
-    const getUsers = async () => {
+    // pagination setup
+    const resultsPerPage = 10
+    const totalResults = users.length
+
+  // pagination change control
+    function onPageChangeTable2(p) {
+    setPageTable2(p)
+    }
+  
+    // dapetin data user lalu set ke state setUsers
+    useEffect( async () => {
       const response = await axios.get("http://localhost:8000/api/admin/user");
       setUsers(response.data.data);
-    };
+    }, [])
 
-    // pagination setup
-  const resultsPerPage = 10
-  const totalResults = users.length
-
-  
-  // pagination change control
-  function onPageChangeTable2(p) {
-    setPageTable2(p)
-  }
-  
-  useEffect(() => {
-    getUsers()
-  }, [])
-
-  useEffect(() => {
+    // ketika ada perubahan di state user ,maka set data baru ke state setDataTable2
+    useEffect(() => {
     if(users.length > 0){
       setDataTable2(users.slice((pageTable2 - 1) * resultsPerPage, pageTable2 * resultsPerPage))
     }
-  }, [users])
+    }, [users])
   
-  useEffect(() => {
+    // ketika ada perubahan di state dataTable2, maka render data baru yang digunakan untuk pagination mapping
+    useEffect(() => {
       setDataTable2(users.slice((pageTable2 - 1) * resultsPerPage, pageTable2 * resultsPerPage))
-  }, [pageTable2])
+    }, [pageTable2])
+
+
   return (
     <>
  <PageTitle>Data User</PageTitle>
@@ -65,9 +62,6 @@ function User() {
         <tr>
           <TableCell>Nama User</TableCell>
           <TableCell>Email</TableCell>
-          <TableCell>Role</TableCell>
-          {/* <TableCell>Status</TableCell>
-          <TableCell>Date</TableCell> */}
           <TableCell>Actions</TableCell>
         </tr>
       </TableHeader>
@@ -75,35 +69,18 @@ function User() {
         {dataTable2.map((user, i) => (
           <TableRow key={i}>
 
-            {/* <TableCell>
+            <TableCell>
               <div className="flex items-center text-sm">
-                <Avatar className="hidden mr-3 md:block" src={user.avatar} alt="User avatar" />
                 <div>
                   <p className="font-semibold">{user.name}</p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">{user.job}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">{user.role}</p>
                 </div>
               </div>
-            </TableCell> */}
-
-            <TableCell>
-              <span className="text-sm">{user.name}</span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm">{user.email}</span>
             </TableCell>
-
-            <TableCell>
-              <span className="text-sm">{user.role}</span>
-            </TableCell>
-
-            {/* <TableCell>
-              <Badge type={user.status}>{user.status}</Badge>
-            </TableCell> */}
-
-            {/* <TableCell>
-              <span className="text-sm">{new Date(user.date).toLocaleDateString()}</span>
-            </TableCell> */}
 
             <TableCell>
               <div className="flex items-center space-x-4">
