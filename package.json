@@ -31,7 +31,8 @@
     "react-focus-lock": "2.4.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
-    "react-transition-group": "4.4.1"
+    "react-transition-group": "4.4.1",
+    "sweetalert2": "^11.4.17"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "1.1.4",

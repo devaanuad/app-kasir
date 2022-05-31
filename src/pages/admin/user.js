@@ -11,15 +11,23 @@ import {
   Button,
   Pagination,
   Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Label,
+  Select,
 } from "@windmill/react-ui";
 import { EditIcon, TrashIcon, SearchIcon } from "../../icons";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function User() {
   const [users, setUsers] = useState([]);
   const [pageTable2, setPageTable2] = useState(1);
   const [dataTable2, setDataTable2] = useState([]);
   const [loading, setLoading] = useState(false);
+
   // for search nya
   const [search, setSearch] = useState("");
   // pagination setup
@@ -71,7 +79,8 @@ function User() {
         users.filter(
           (user) =>
             user.name.toLowerCase().includes(search.toLowerCase()) ||
-            user.email.toLowerCase().includes(search.toLowerCase())
+            user.email.toLowerCase().includes(search.toLowerCase()) ||
+            user.role.toLowerCase().includes(search.toLowerCase())
         )
       );
     } else if (search === "") {
@@ -83,6 +92,107 @@ function User() {
       );
     }
   }, [search]);
+
+  // FUNGSI UNTUK OPEN CLOSE MODALS
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  function openModal() {
+    setIsModalOpen(true);
+  }
+  function closeModal() {
+    setIsModalOpen(false);
+  }
+
+  // FUNGSI POST DATA BARU
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newRole, setNewRole] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  const postNewUser = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", newName);
+    formData.append("email", newEmail);
+    formData.append("role", newRole);
+    formData.append("password", newPassword);
+
+    try {
+      // sweet alert loading
+      Swal.fire({
+        title: "Loading....",
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      await axios.post(
+        "http://localhost:8000/api/admin/user/create",
+        formData,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        }
+      );
+      Swal.close();
+      await Swal.fire({
+        icon: "success",
+        title: "Sukses Menambah Data",
+      });
+      getUsers();
+      closeModal();
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text:
+          error.response.data.error.name ||
+          error.response.data.error.email ||
+          error.response.data.error.password ||
+          error.response.data.error.role,
+      });
+    }
+  };
+
+  // FUNGSI UNTUK DELETE USER
+  const DeleteUser = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // sweet alert loading
+          Swal.fire({
+            title: "Please Wait !",
+            html: "deleting data",
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          await axios.delete(`http://localhost:8000/api/admin/user/${id}`);
+          Swal.close();
+          await Swal.fire({
+            icon: "success",
+            title: "Sukses Menghapus Data",
+          });
+          getUsers();
+        } catch (error) {
+          await Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.error,
+          });
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -104,7 +214,12 @@ function User() {
         </div>
         <div />
         <div style={{ textAlign: "right" }}>
-          <Button className="" icon={EditIcon} aria-label="Edit">
+          <Button
+            className=""
+            icon={EditIcon}
+            aria-label="Edit"
+            onClick={openModal}
+          >
             Tambah Data
           </Button>
         </div>
@@ -144,7 +259,12 @@ function User() {
                         <EditIcon className="w-5 h-5" aria-hidden="true" />
                       </Button>
                       {user.role !== "admin" ? (
-                        <Button layout="link" size="icon" aria-label="Delete">
+                        <Button
+                          layout="link"
+                          size="icon"
+                          aria-label="Delete"
+                          onClick={() => DeleteUser(user.id)}
+                        >
                           <TrashIcon className="w-5 h-5" aria-hidden="true" />
                         </Button>
                       ) : (
@@ -170,6 +290,69 @@ function User() {
           />
         </TableFooter>
       </TableContainer>
+      {/* MODALS */}
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalHeader>FORM ADD DATA USER</ModalHeader>
+        <form onSubmit={postNewUser}>
+          <ModalBody>
+            <Label>
+              <span>Name</span>
+              <Input
+                className="mt-1"
+                placeholder="Masukan Nama..."
+                onChange={(e) => setNewName(e.target.value)}
+                value={newName}
+              />
+            </Label>
+            <Label className="mt-4">
+              <span>Email</span>
+              <Input
+                className="mt-1"
+                placeholder="mail@mail.com"
+                onChange={(e) => setNewEmail(e.target.value)}
+                value={newEmail}
+                required
+              />
+            </Label>
+            <Label className="mt-4">
+              <span>Password</span>
+              <Input
+                type="password"
+                className="mt-1"
+                placeholder="Jane Doe"
+                onChange={(e) => setNewPassword(e.target.value)}
+                value={newPassword}
+                required
+              />
+            </Label>
+            <Label className="mt-4">
+              <span>Role</span>
+              <Select
+                className="mt-1"
+                onChange={(e) => setNewRole(e.target.value)}
+                value={newRole}
+                required
+              >
+                <option>Pilih Role</option>
+                <option>admin</option>
+                <option>manager</option>
+                <option>kasir</option>
+              </Select>
+            </Label>
+          </ModalBody>
+          <ModalFooter>
+            <div className="hidden sm:block">
+              <Button layout="outline" onClick={closeModal}>
+                Cancel
+              </Button>
+            </div>
+            <div className="hidden sm:block">
+              <Button type="submit">Accept</Button>
+            </div>
+          </ModalFooter>
+        </form>
+      </Modal>
+      {/* end modals */}
     </>
   );
 }
