@@ -19,9 +19,11 @@ class userController extends Controller
      */
     public function index()
     {
-        $users = cache()->remember('users', 60, function () {
-            return userResource::collection(User::all());
-        });
+        // $users = cache()->remember('users', 60, function () {
+        //     return userResource::collection(User::all());
+        // });
+
+        $users = userResource::collection(User::all());
 
 
         if (empty($users)) {
@@ -31,7 +33,7 @@ class userController extends Controller
         }
 
         return response()->json([
-            'data' => $users
+            "data" => $users
         ], 200);
     }
 
@@ -42,16 +44,24 @@ class userController extends Controller
      */
     public function create(Request $req)
     {
+
+        $messageError = [
+            'required' => ':attribute tidak boleh kosong',
+            'min' => ':attribute minimal :min karakter',
+            'max' => ':attribute maksimal :max karakter',
+            'email' => ':attribute email tidak valid',
+            'unique' => ':attribute sudah digunakan',
+        ];
+
         $validator = Validator::make($req->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:3',
             'role' => 'required|in:manager,admin,kasir'
-        ]);
+        ], $messageError);
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Data tidak valid',
                 'error' => $validator->errors()
             ], 400);
         }
