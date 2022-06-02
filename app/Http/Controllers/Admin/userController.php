@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\http\Resources\userResource;
 use Illuminate\Support\Facades\Cache;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class userController extends Controller
 {
@@ -127,10 +128,9 @@ class userController extends Controller
         //make edit user
         $user = User::find($id);
         $validator = Validator::make($req->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'required|min:3',
-            'role' => 'required|in:manager,admin,kasir'
+            'email' => 'email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:3',
+            'role' => 'in:manager,admin,kasir'
         ]);
 
         if ($validator->fails()) {
@@ -140,22 +140,50 @@ class userController extends Controller
             ], 400);
         }
 
-        try {
-            $user->name = $req->name;
-            $user->email = $req->email;
-            $user->password = Hash::make($req->password);
-            $user->role = $req->role;
-            $user->save();
+        // jika password kosong
+        if ($req->password == "") {
+            try {
+                $user->update([
+                    'name' => $req->name,
+                    'email' => $req->email,
+                    'role' => $req->role
+                ]);
 
+                return response()->json([
+                    'message' => 'Data berhasil diubah',
+                    'data' => $user
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Gagal mengubah data',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+            // jika password tiidak kosong dan password baru sama dengan password lama
+        } elseif (password_verify($req->password_old, $user->password)) {
+            try {
+                $user->update([
+                    'name' => $req->name,
+                    'email' => $req->email,
+                    'password' => Hash::make($req->password),
+                    'role' => $req->role
+                ]);
+
+                return response()->json([
+                    'message' => 'Data berhasil diubah',
+                    'data' => $user
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Gagal mengubah data',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+            // jika password tidak sama dengan password lama
+        } else {
             return response()->json([
-                'message' => 'Data berhasil diubah',
-                'data' => $user
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Gagal mengubah data',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Password tidak sesuai'
+            ], 400);
         }
     }
 
