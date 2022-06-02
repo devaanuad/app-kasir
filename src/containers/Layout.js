@@ -1,26 +1,28 @@
-import React, { useContext, Suspense, useEffect, lazy } from 'react'
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
-import routes from '../routes'
+import React, { useContext, Suspense, useEffect, lazy } from "react";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
+import routes from "../routes";
 
-import Sidebar from '../components/Sidebar'
-import Header from '../components/Header'
-import Main from '../containers/Main'
-import ThemedSuspense from '../components/ThemedSuspense'
-import { SidebarContext } from '../context/SidebarContext'
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
+import Main from "../containers/Main";
+import ThemedSuspense from "../components/ThemedSuspense";
+import { SidebarContext } from "../context/SidebarContext";
 
-const Page404 = lazy(() => import('../pages/404'))
+const Page404 = lazy(() => import("../pages/404"));
 
 function Layout() {
-  const { isSidebarOpen, closeSidebar } = useContext(SidebarContext)
-  let location = useLocation()
+  const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
+  let location = useLocation();
 
   useEffect(() => {
-    closeSidebar()
-  }, [location])
+    closeSidebar();
+  }, [location]);
 
   return (
     <div
-      className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${isSidebarOpen && 'overflow-hidden'}`}
+      className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${
+        isSidebarOpen && "overflow-hidden"
+      }`}
     >
       <Sidebar />
 
@@ -37,7 +39,7 @@ function Layout() {
                     path={`/app${route.path}`}
                     render={(props) => <route.component {...props} />}
                   />
-                ) : null
+                ) : null;
               })}
               <Redirect exact from="/app" to="/app/dashboard" />
               <Route component={Page404} />
@@ -46,7 +48,7 @@ function Layout() {
         </Main>
       </div>
     </div>
-  )
+  );
 }
 
-export default Layout
+export default Layout;

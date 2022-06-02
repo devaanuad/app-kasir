@@ -1,4 +1,5 @@
 import PageTitle from "../../components/Typography/PageTitle";
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -255,7 +256,13 @@ function User() {
 
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button layout="link" size="icon" aria-label="Edit">
+                      <Button
+                        layout="link"
+                        size="icon"
+                        aria-label="Edit"
+                        tag={Link}
+                        to={`/app/admin/user/edit/${user.id}`}
+                      >
                         <EditIcon className="w-5 h-5" aria-hidden="true" />
                       </Button>
                       {user.role !== "admin" ? (
