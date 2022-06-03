@@ -120,9 +120,10 @@ function User() {
     try {
       // sweet alert loading
       Swal.fire({
-        title: "Loading....",
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
+        title: "Loading...",
+        // html: "I will close in <b></b> milliseconds.",
+        timerProgressBar: true,
+        didOpen: () => {
           Swal.showLoading();
         },
       });
@@ -170,10 +171,10 @@ function User() {
         try {
           // sweet alert loading
           Swal.fire({
-            title: "Please Wait !",
-            html: "deleting data",
-            allowOutsideClick: false,
-            onBeforeOpen: () => {
+            title: "Loading...",
+            // html: "I will close in <b></b> milliseconds.",
+            timerProgressBar: true,
+            didOpen: () => {
               Swal.showLoading();
             },
           });

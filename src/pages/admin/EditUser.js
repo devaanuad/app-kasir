@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, Redirect } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import PageTitle from "../../components/Typography/PageTitle";
 import { Input, Label, Select, Button } from "@windmill/react-ui";
 import axios from "axios";
@@ -33,13 +33,11 @@ function EditUser() {
     try {
       // sweet alert loading
       Swal.fire({
-        title: "Please Wait..!",
-        text: "Is working..",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        onOpen: () => {
-          Swal.showLoading(Swal.getDenyButton());
+        title: "Loading...",
+        // html: "I will close in <b></b> milliseconds.",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
         },
       });
       await axios.put(`http://localhost:8000/api/admin/user/${id}`, {
