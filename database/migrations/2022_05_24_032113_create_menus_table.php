@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('deskripsi');
             $table->integer('harga');
             $table->enum('kategori', ['makanan', 'minuman']);
+            $table->text('gambar');
             $table->timestamps();
         });
     }

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\userController;
 use App\Http\Controllers\Kasir\transaksiController;
 use App\Http\Controllers\Manager\mejaController;
+use App\Http\Controllers\Manager\menuController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,11 +38,11 @@ Route::prefix('manager')->group(function () {
     Route::put('/meja/update/{id}', [mejaController::class, 'update']);
     Route::delete('/meja/{id}', [mejaController::class, 'destroy']);
 
-    Route::get('/menu', [mejaController::class, 'index']);
-    Route::post('/menu/create', [mejaController::class, 'create']);
-    Route::get('/menu/{id}', [mejaController::class, 'show']);
-    Route::put('/menu/update/{id}', [mejaController::class, 'update']);
-    Route::delete('/menu/{id}', [mejaController::class, 'delete']);
+    Route::get('/menu', [menuController::class, 'index']);
+    Route::post('/menu/create', [menuController::class, 'create']);
+    Route::get('/menu/{id}', [menuController::class, 'show']);
+    Route::post('/menu/update/{id}', [menuController::class, 'update']);
+    Route::delete('/menu/delete/{id}', [menuController::class, 'delete']);
 });
 
 Route::prefix('kasir')->group(function () {

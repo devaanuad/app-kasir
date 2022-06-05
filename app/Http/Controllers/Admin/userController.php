@@ -140,7 +140,7 @@ class userController extends Controller
             ], 400);
         }
 
-        // jika password kosong
+        // jika password kosong 
         if ($req->password == "") {
             try {
                 $user->update([

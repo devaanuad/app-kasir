@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             MejaSeeder::class
         ]);
 
-        User::factory(3)->create();
+        User::factory(5)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'admin',

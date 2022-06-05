@@ -14,6 +14,7 @@ class Menu extends Model
         'deskripsi',
         'harga',
         'kategori',
+        'gambar'
     ];
 
 
