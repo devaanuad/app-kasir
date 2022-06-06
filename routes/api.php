@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\userController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Kasir\transaksiController;
 use App\Http\Controllers\Manager\mejaController;
 use App\Http\Controllers\Manager\menuController;
@@ -22,8 +23,7 @@ use App\Http\Controllers\Manager\menuController;
 //     return $request->user();
 // });
 
-
-Route::prefix('admin')->group(function () {
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('/user', [userController::class, 'index']);
     Route::post('/user/create', [userController::class, 'create']);
     Route::get('/user/{id}', [userController::class, 'show']);
@@ -31,7 +31,7 @@ Route::prefix('admin')->group(function () {
     Route::delete('/user/{id}', [userController::class, 'destroy']);
 });
 
-Route::prefix('manager')->group(function () {
+Route::middleware('auth:sanctum')->prefix('manager')->group(function () {
     Route::get('/meja', [mejaController::class, 'index']);
     Route::post('/meja/create', [mejaController::class, 'create']);
     Route::get('/meja/{id}', [mejaController::class, 'show']);
@@ -45,10 +45,16 @@ Route::prefix('manager')->group(function () {
     Route::delete('/menu/delete/{id}', [menuController::class, 'delete']);
 });
 
-Route::prefix('kasir')->group(function () {
+Route::middleware('auth:sanctum')->prefix('kasir')->group(function () {
     Route::get('/transaksi', [transaksiController::class, 'index']);
     Route::post('/transaksi/create', [transaksiController::class, 'store']);
     Route::get('/transaksi/{id}', [transaksiController::class, 'show']);
     Route::put('/transaksi/update/{id}', [transaksiController::class, 'update']);
     Route::delete('/transaksi/{id}', [transaksiController::class, 'destroy']);
+});
+
+// route login logout
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

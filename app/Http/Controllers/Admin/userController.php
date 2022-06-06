@@ -13,6 +13,8 @@ use phpDocumentor\Reflection\Types\Nullable;
 
 class userController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +27,6 @@ class userController extends Controller
         // });
 
         $users = userResource::collection(User::all());
-
 
         if (empty($users)) {
             return response()->json([
@@ -45,45 +46,52 @@ class userController extends Controller
      */
     public function create(Request $req)
     {
+        $user = $req->user();
+        if ($user->tokenCan('admin_token')) {
 
-        $messageError = [
-            'required' => ':attribute tidak boleh kosong',
-            'min' => ':attribute minimal :min karakter',
-            'max' => ':attribute maksimal :max karakter',
-            'email' => ':attribute email tidak valid',
-            'unique' => ':attribute sudah digunakan',
-        ];
+            $messageError = [
+                'required' => ':attribute tidak boleh kosong',
+                'min' => ':attribute minimal :min karakter',
+                'max' => ':attribute maksimal :max karakter',
+                'email' => ':attribute email tidak valid',
+                'unique' => ':attribute sudah digunakan',
+            ];
 
-        $validator = Validator::make($req->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:3',
-            'role' => 'required|in:manager,admin,kasir'
-        ], $messageError);
+            $validator = Validator::make($req->all(), [
+                'name' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:3',
+                'role' => 'required|in:manager,admin,kasir'
+            ], $messageError);
 
-        if ($validator->fails()) {
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => $validator->errors()
+                ], 400);
+            }
+
+            try {
+                $user = User::create([
+                    'name' => $req->name,
+                    'email' => $req->email,
+                    'password' => Hash::make($req->password),
+                    'role' => $req->role
+                ]);
+
+                return response()->json([
+                    'message' => 'Data berhasil ditambahkan',
+                    'data' => $user
+                ], 201);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Gagal menambah data',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        } else {
             return response()->json([
-                'error' => $validator->errors()
-            ], 400);
-        }
-
-        try {
-            $user = User::create([
-                'name' => $req->name,
-                'email' => $req->email,
-                'password' => Hash::make($req->password),
-                'role' => $req->role
-            ]);
-
-            return response()->json([
-                'message' => 'Data berhasil ditambahkan',
-                'data' => $user
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Gagal menambah data',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Anda tidak memiliki akses'
+            ], 401);
         }
     }
 
@@ -220,6 +228,24 @@ class userController extends Controller
             return response()->json([
                 'message' => 'Gagal menghapus data',
                 'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // make function for logout 
+    public function logout(Request $req)
+    {
+
+        try {
+            $user = $req->user();
+            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+            return response()->json([
+                'message' => 'Logout berhasil'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Gagal melakukan logout',
+                'error' => $th->getMessage()
             ], 500);
         }
     }

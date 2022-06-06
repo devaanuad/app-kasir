@@ -13,6 +13,7 @@ use App\Models\Menu;
 
 class transaksiController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
