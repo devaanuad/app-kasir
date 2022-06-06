@@ -69,7 +69,6 @@ function Header() {
               ContentType: "application/json",
             }
           );
-
           await Swal.fire({
             title: "Logout Success",
             icon: "success",
