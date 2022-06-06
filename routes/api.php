@@ -19,12 +19,9 @@ use App\Http\Controllers\Manager\menuController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-    Route::get('/user', [userController::class, 'index']);
+    Route::get('/user', [userController::class, 'getUserss']);
     Route::post('/user/create', [userController::class, 'create']);
     Route::get('/user/{id}', [userController::class, 'show']);
     Route::put('/user/{id}', [userController::class, 'edit']);

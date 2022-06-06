@@ -232,21 +232,25 @@ class userController extends Controller
         }
     }
 
-    // make function for logout 
-    public function logout(Request $req)
+    public function getUserss(Request $req)
     {
+        $user = $req->user();
+        if ($user->tokenCan('admin_token')) {
+            $users = userResource::collection(User::all());
 
-        try {
-            $user = $req->user();
-            $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+            if (empty($users)) {
+                return response()->json([
+                    'message' => 'Data tidak ditemukan'
+                ], 404);
+            }
+
             return response()->json([
-                'message' => 'Logout berhasil'
+                "data" => $users
             ], 200);
-        } catch (\Throwable $th) {
+        } else {
             return response()->json([
-                'message' => 'Gagal melakukan logout',
-                'error' => $th->getMessage()
-            ], 500);
+                'message' => 'Anda tidak memiliki akses'
+            ], 401);
         }
     }
 }
