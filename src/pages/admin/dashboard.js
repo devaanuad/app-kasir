@@ -11,7 +11,12 @@ function Dashboard() {
   const [totalKasir, setTotalKasir] = useState(0);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:8000/api/admin/user");
+    const response = await axios.get("http://localhost:8000/api/admin/user", {
+      withCredentials: true,
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
     return (
       setTotalUsers(response.data.data.length),
       setTotalAdmin(

@@ -1,12 +1,14 @@
-import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom'
-import './assets/css/tailwind.output.css'
-import App from './App'
-import { SidebarProvider } from './context/SidebarContext'
-import ThemedSuspense from './components/ThemedSuspense'
-import { Windmill } from '@windmill/react-ui'
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom";
+import "./assets/css/tailwind.output.css";
+import App from "./App";
+import { SidebarProvider } from "./context/SidebarContext";
+import ThemedSuspense from "./components/ThemedSuspense";
+import { Windmill } from "@windmill/react-ui";
 import "./components/loaderSpinners.css";
+import axios from "axios";
 
+axios.defaults.withCredentials = true;
 
 ReactDOM.render(
   <SidebarProvider>
@@ -16,6 +18,5 @@ ReactDOM.render(
       </Windmill>
     </Suspense>
   </SidebarProvider>,
-  document.getElementById('root')
-)
-
+  document.getElementById("root")
+);

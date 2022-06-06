@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { SidebarContext } from '../context/SidebarContext'
+import React, { useContext, useState } from "react";
+import { SidebarContext } from "../context/SidebarContext";
 import {
   SearchIcon,
   MoonIcon,
@@ -9,24 +9,87 @@ import {
   OutlinePersonIcon,
   OutlineCogIcon,
   OutlineLogoutIcon,
-} from '../icons'
-import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui'
+} from "../icons";
+import {
+  Avatar,
+  Badge,
+  Input,
+  Dropdown,
+  DropdownItem,
+  WindmillContext,
+} from "@windmill/react-ui";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function Header() {
-  const { mode, toggleMode } = useContext(WindmillContext)
-  const { toggleSidebar } = useContext(SidebarContext)
+  const { mode, toggleMode } = useContext(WindmillContext);
+  const { toggleSidebar } = useContext(SidebarContext);
 
-  const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false)
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   function handleNotificationsClick() {
-    setIsNotificationsMenuOpen(!isNotificationsMenuOpen)
+    setIsNotificationsMenuOpen(!isNotificationsMenuOpen);
   }
 
   function handleProfileClick() {
-    setIsProfileMenuOpen(!isProfileMenuOpen)
+    setIsProfileMenuOpen(!isProfileMenuOpen);
   }
 
+  const history = useHistory();
+  const logout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Logout?",
+      icon: "answer",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // sweet alert loading
+          Swal.fire({
+            title: "Loading...",
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          await axios.post(
+            "http://localhost:8000/api/logout",
+            {},
+            {
+              withCredentials: true,
+              headers: {
+                Authorization: `${localStorage.getItem("token")}`,
+              },
+              ContentType: "application/json",
+            }
+          );
+
+          await Swal.fire({
+            title: "Logout Success",
+            icon: "success",
+            showConfirmButton: true,
+          });
+          localStorage.removeItem("token");
+          localStorage.removeItem("data_user");
+          localStorage.removeItem("role");
+          history.push("/login");
+        } catch (error) {
+          Swal.fire({
+            title: "Logout Failed",
+            icon: "error",
+            showConfirmButton: true,
+            text: error.response.data.message,
+          });
+        }
+      }
+    });
+  };
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">
       <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
@@ -59,7 +122,7 @@ function Header() {
               onClick={toggleMode}
               aria-label="Toggle color mode"
             >
-              {mode === 'dark' ? (
+              {mode === "dark" ? (
                 <SunIcon className="w-5 h-5" aria-hidden="true" />
               ) : (
                 <MoonIcon className="w-5 h-5" aria-hidden="true" />
@@ -95,7 +158,7 @@ function Header() {
                 <span>Sales</span>
                 <Badge type="danger">2</Badge>
               </DropdownItem>
-              <DropdownItem onClick={() => alert('Alerts!')}>
+              <DropdownItem onClick={() => alert("Alerts!")}>
                 <span>Alerts</span>
               </DropdownItem>
             </Dropdown>
@@ -121,15 +184,21 @@ function Header() {
               onClose={() => setIsProfileMenuOpen(false)}
             >
               <DropdownItem tag="a" href="#">
-                <OutlinePersonIcon className="w-4 h-4 mr-3" aria-hidden="true" />
+                <OutlinePersonIcon
+                  className="w-4 h-4 mr-3"
+                  aria-hidden="true"
+                />
                 <span>Profile</span>
               </DropdownItem>
               <DropdownItem tag="a" href="#">
                 <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Settings</span>
               </DropdownItem>
-              <DropdownItem onClick={() => alert('Log out!')}>
-                <OutlineLogoutIcon className="w-4 h-4 mr-3" aria-hidden="true" />
+              <DropdownItem onClick={logout}>
+                <OutlineLogoutIcon
+                  className="w-4 h-4 mr-3"
+                  aria-hidden="true"
+                />
                 <span>Log out</span>
               </DropdownItem>
             </Dropdown>
@@ -137,7 +206,7 @@ function Header() {
         </ul>
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

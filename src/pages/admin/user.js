@@ -41,7 +41,12 @@ function User() {
   }
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:8000/api/admin/user");
+    const response = await axios.get("http://localhost:8000/api/admin/user", {
+      withCredentials: true,
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
     setUsers(response.data.data);
     setLoading(true);
   };
@@ -121,7 +126,6 @@ function User() {
       // sweet alert loading
       Swal.fire({
         title: "Loading...",
-        // html: "I will close in <b></b> milliseconds.",
         timerProgressBar: true,
         didOpen: () => {
           Swal.showLoading();
@@ -131,8 +135,9 @@ function User() {
         "http://localhost:8000/api/admin/user/create",
         formData,
         {
+          withCredentials: true,
           headers: {
-            "Content-type": "multipart/form-data",
+            Authorization: `${localStorage.getItem("token")}`,
           },
         }
       );
@@ -178,7 +183,12 @@ function User() {
               Swal.showLoading();
             },
           });
-          await axios.delete(`http://localhost:8000/api/admin/user/${id}`);
+          await axios.delete(`http://localhost:8000/api/admin/user/${id}`, {
+            withCredentials: true,
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+            },
+          });
           Swal.close();
           await Swal.fire({
             icon: "success",

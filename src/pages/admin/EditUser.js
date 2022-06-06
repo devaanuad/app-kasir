@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import PageTitle from "../../components/Typography/PageTitle";
 import { Input, Label, Select, Button } from "@windmill/react-ui";
 import axios from "axios";
@@ -13,6 +13,7 @@ function EditUser() {
   const [editPasswordLama, seteditPasswordLama] = useState("");
   const [editPasswordBaru, seteditPasswordBaru] = useState("");
   const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     getUserId();
@@ -40,18 +41,27 @@ function EditUser() {
           Swal.showLoading();
         },
       });
-      await axios.put(`http://localhost:8000/api/admin/user/${id}`, {
-        name: editName,
-        email: editEmail,
-        role: editRole,
-        password: editPasswordBaru,
-        password_old: editPasswordLama,
-      });
+      await axios.put(
+        `http://localhost:8000/api/admin/user/${id}`,
+        {
+          name: editName,
+          email: editEmail,
+          role: editRole,
+          password: editPasswordBaru,
+          password_old: editPasswordLama,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
       await Swal.fire({
         icon: "success",
         title: "Sukses Merubah Data",
       });
-      window.location = "/app/admin/user";
+      history.push("/app/admin/user");
     } catch (error) {
       await Swal.fire({
         icon: "error",
