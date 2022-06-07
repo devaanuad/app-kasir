@@ -1950,6 +1950,11 @@
     mini-svg-data-uri "^1.0.3"
     traverse "^0.6.6"
 
+"@tawk.to/tawk-messenger-react@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@tawk.to/tawk-messenger-react/-/tawk-messenger-react-2.0.1.tgz#2e9bbfef47f81578aa49a7cd4d72191a0c3276a4"
+  integrity sha512-jMWbeOCMwqcjLCR7a9+mh0Ce/Cl9aPyfZAvzkNKCFKBYaV9n8eAE7U/XKKFqCKfp5AehDMUCB5saG2cFSSP0Xw==
+
 "@testing-library/dom@*":
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.13.0.tgz#bc00bdd64c7d8b40841e27a70211399ad3af46f5"

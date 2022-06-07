@@ -5,6 +5,7 @@ import { Label, Input, Button } from "@windmill/react-ui";
 import axios from "axios";
 import getCSRF from "../components/Middleware/GetCSRF";
 import Swal from "sweetalert2";
+import { API_URL } from "../components/Middleware/constants";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ function Login() {
         },
       });
       await axios
-        .post("http://localhost:8000/api/login", data, {
+        .post(API_URL + "api/login", data, {
           withCredentials: true,
         })
         .then((res) => {
@@ -93,6 +94,7 @@ function Login() {
                     placeholder="john@doe.com"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
+                    required
                   />
                 </Label>
 
@@ -104,6 +106,7 @@ function Login() {
                     placeholder="***************"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
+                    required
                   />
                 </Label>
 

@@ -22,8 +22,13 @@ import {
 import { EditIcon, TrashIcon, SearchIcon } from "../../icons";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URL } from "../../components/Middleware/constants";
+import UsersAccess from "../../components/Middleware/BlockUsers";
 
 function User() {
+  // block login and akses role
+  UsersAccess("admin");
+
   const [users, setUsers] = useState([]);
   const [pageTable2, setPageTable2] = useState(1);
   const [dataTable2, setDataTable2] = useState([]);
@@ -41,7 +46,7 @@ function User() {
   }
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:8000/api/admin/user", {
+    const response = await axios.get(API_URL + "api/admin/user", {
       withCredentials: true,
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
@@ -131,16 +136,12 @@ function User() {
           Swal.showLoading();
         },
       });
-      await axios.post(
-        "http://localhost:8000/api/admin/user/create",
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      await axios.post(API_URL + "api/admin/user/create", formData, {
+        withCredentials: true,
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
       Swal.close();
       await Swal.fire({
         icon: "success",
@@ -183,7 +184,7 @@ function User() {
               Swal.showLoading();
             },
           });
-          await axios.delete(`http://localhost:8000/api/admin/user/${id}`, {
+          await axios.delete(API_URL + `api/admin/user/${id}`, {
             withCredentials: true,
             headers: {
               Authorization: `${localStorage.getItem("token")}`,

@@ -21,6 +21,7 @@ import {
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URL } from "./Middleware/constants";
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -59,7 +60,7 @@ function Header() {
             },
           });
           await axios.post(
-            "http://localhost:8000/api/logout",
+            API_URL + "api/logout",
             {},
             {
               withCredentials: true,

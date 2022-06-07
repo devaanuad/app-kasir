@@ -4,6 +4,9 @@ import PageTitle from "../../components/Typography/PageTitle";
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from "../../icons";
 import RoundIcon from "../../components/RoundIcon";
 import axios from "axios";
+import { API_URL } from "../../components/Middleware/constants";
+import UsersAccess from "../../components/Middleware/BlockUsers";
+
 function Dashboard() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalAdmin, setTotalAdmin] = useState(0);
@@ -11,7 +14,7 @@ function Dashboard() {
   const [totalKasir, setTotalKasir] = useState(0);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:8000/api/admin/user", {
+    const response = await axios.get(API_URL + "api/admin/user", {
       withCredentials: true,
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
@@ -30,6 +33,9 @@ function Dashboard() {
       )
     );
   };
+
+  // block login and akses role
+  UsersAccess("admin");
 
   useEffect(() => {
     getUsers();

@@ -4,8 +4,13 @@ import PageTitle from "../../components/Typography/PageTitle";
 import { Input, Label, Select, Button } from "@windmill/react-ui";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URL } from "../../components/Middleware/constants";
+import UsersAccess from "../../components/Middleware/BlockUsers";
 
 function EditUser() {
+  // block login and akses role
+  UsersAccess("admin");
+
   // FUNGSI EDIT DATA
   const [editName, seteditName] = useState("");
   const [editEmail, seteditEmail] = useState("");
@@ -20,9 +25,12 @@ function EditUser() {
   }, []);
 
   const getUserId = async () => {
-    const response = await axios.get(
-      `http://localhost:8000/api/admin/user/${id}`
-    );
+    const response = await axios.get(API_URL + `api/admin/user/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
     seteditName(response.data.data.name);
     seteditEmail(response.data.data.email);
     seteditRole(response.data.data.role);
@@ -42,7 +50,7 @@ function EditUser() {
         },
       });
       await axios.put(
-        `http://localhost:8000/api/admin/user/${id}`,
+        API_URL + `api/admin/user/${id}`,
         {
           name: editName,
           email: editEmail,

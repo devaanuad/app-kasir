@@ -9,7 +9,6 @@ import "./components/loaderSpinners.css";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-
 ReactDOM.render(
   <SidebarProvider>
     <Suspense fallback={<ThemedSuspense />}>
