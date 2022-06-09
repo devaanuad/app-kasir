@@ -1,7 +1,6 @@
 import React, { useContext, Suspense, useEffect, lazy } from "react";
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
-import routes from "../routes";
-
+import * as data from "../routes";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import Main from "../containers/Main";
@@ -9,6 +8,18 @@ import ThemedSuspense from "../components/ThemedSuspense";
 import { SidebarContext } from "../context/SidebarContext";
 
 const Page404 = lazy(() => import("../pages/404"));
+
+const role = localStorage.getItem("role");
+const routes =
+  role === "admin"
+    ? data.adminRoutes
+    : role === "kasir"
+    ? data.kasirRoutes
+    : role === "manager"
+    ? data.managerRoutes
+    : role === "undefined"
+    ? data.routes
+    : data.routes;
 
 function Layout() {
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);

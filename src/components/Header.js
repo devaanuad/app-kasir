@@ -79,6 +79,7 @@ function Header() {
           localStorage.removeItem("data_user");
           localStorage.removeItem("role");
           history.push("/login");
+          window.location.reload();
         } catch (error) {
           Swal.fire({
             title: "Logout Failed",

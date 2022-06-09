@@ -17,5 +17,5 @@ ReactDOM.render(
       </Windmill>
     </Suspense>
   </SidebarProvider>,
-  document.getElementById("root")
+  document.getElementById("zeus-uwu")
 );

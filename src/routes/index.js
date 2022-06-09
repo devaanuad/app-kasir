@@ -14,6 +14,8 @@ const Blank = lazy(() => import("../pages/Blank"));
 const admin_dashboard = lazy(() => import("../pages/admin/dashboard"));
 const admin_user = lazy(() => import("../pages/admin/user"));
 const admin_edit_user = lazy(() => import("../pages/admin/EditUser"));
+
+const kasir_transaksi = lazy(() => import("../pages/kasir/transaksi"));
 /**
  * ⚠ These are internal routes!
  * They will be rendered inside the app, using the default `containers/Layout`.
@@ -24,7 +26,7 @@ const admin_edit_user = lazy(() => import("../pages/admin/EditUser"));
  * If you're looking for the links rendered in the SidebarContent, go to
  * `routes/sidebar.js`
  */
-const routes = [
+export const routes = [
   {
     path: "/dashboard", // the url
     component: Dashboard, // view rendered
@@ -61,8 +63,10 @@ const routes = [
     path: "/blank",
     component: Blank,
   },
+];
 
-  // path for admin
+// path for admin
+export const adminRoutes = [
   {
     path: "/admin/dashboard",
     component: admin_dashboard,
@@ -77,4 +81,18 @@ const routes = [
   },
 ];
 
-export default routes;
+// path for kasir
+export const kasirRoutes = [
+  {
+    path: "/kasir/transaksi",
+    component: kasir_transaksi,
+  },
+];
+
+// path for manager
+export const managerRoutes = [
+  {
+    path: "/forms",
+    component: Forms,
+  },
+];

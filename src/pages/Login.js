@@ -12,6 +12,18 @@ function Login() {
   const [password, setPassword] = useState("");
   const History = useHistory();
 
+  const tokens = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  if (tokens) {
+    role === "admin"
+      ? History.push("/app/admin/dashboard")
+      : role === "kasir"
+      ? History.push("/app/kasir/transaksi")
+      : role === "manager"
+      ? History.push("/app/manager/dashboard")
+      : History.push("/login");
+  }
+
   // panggil untuk buka blokiran csrf token
   useEffect(() => {
     getCSRF();
