@@ -15,7 +15,7 @@ class Detail_transaksi extends Model
         'menu_id',
         'jumlah',
         'harga',
-        'subtotal',
+        'sub_total',
 
     ];
 

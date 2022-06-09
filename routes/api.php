@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->prefix('kasir')->group(function () {
     Route::get('/transaksi', [transaksiController::class, 'index']);
     Route::post('/transaksi/create', [transaksiController::class, 'store']);
     Route::get('/transaksi/{id}', [transaksiController::class, 'show']);
-    Route::put('/transaksi/update/{id}', [transaksiController::class, 'update']);
+    Route::post('/transaksi/createDetail', [transaksiController::class, 'CreateDetailTransaksi']);
     Route::delete('/transaksi/{id}', [transaksiController::class, 'destroy']);
 });
 

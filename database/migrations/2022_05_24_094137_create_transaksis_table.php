@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transaksis', function (Blueprint $table) {
-            $table->id();
-            $table->string('transaksi_id');
+            $table->id('id_transaksi');
+            $table->string('no_transaksi');
             $table->foreignId('meja_id')->constrained('mejas');
             $table->foreignId('user_id')->constrained('users');
             $table->integer('total_bayar');
