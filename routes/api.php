@@ -48,6 +48,12 @@ Route::middleware('auth:sanctum')->prefix('kasir')->group(function () {
     Route::get('/transaksi/{id}', [transaksiController::class, 'show']);
     Route::post('/transaksi/createDetail', [transaksiController::class, 'CreateDetailTransaksi']);
     Route::delete('/transaksi/{id}', [transaksiController::class, 'destroy']);
+
+    Route::get('/menu', [menuController::class, 'index']);
+    Route::post('/menu/create', [menuController::class, 'create']);
+    Route::get('/menu/{id}', [menuController::class, 'show']);
+    Route::post('/menu/update/{id}', [menuController::class, 'update']);
+    Route::delete('/menu/delete/{id}', [menuController::class, 'delete']);
 });
 
 // route login logout
