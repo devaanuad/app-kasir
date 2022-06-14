@@ -21,9 +21,9 @@ import {
 } from "@windmill/react-ui";
 import { EditIcon, TrashIcon, SearchIcon } from "../../icons";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { API_URL } from "../../components/Middleware/constants";
 import UsersAccess from "../../components/Middleware/BlockUsers";
+import * as SweetAlert from "../../components/Sweetalert2";
 
 function User() {
   // block login and akses role
@@ -128,80 +128,46 @@ function User() {
     formData.append("password", newPassword);
 
     try {
-      // sweet alert loading
-      Swal.fire({
-        title: "Loading...",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
+      SweetAlert.SweetLoading();
       await axios.post(API_URL + "api/admin/user/create", formData, {
         withCredentials: true,
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
       });
-      Swal.close();
-      await Swal.fire({
-        icon: "success",
-        title: "Sukses Menambah Data",
-      });
+      await SweetAlert.SweetOK("Data berhasil ditambahkan");
       getUsers();
       closeModal();
     } catch (error) {
-      await Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text:
-          error.response.data.error.name ||
+      await SweetAlert.SweetError(
+        "Gagal",
+        error.response.data.error.name ||
           error.response.data.error.email ||
           error.response.data.error.password ||
-          error.response.data.error.role,
-      });
+          error.response.data.error.role
+      );
     }
   };
 
   // FUNGSI UNTUK DELETE USER
   const DeleteUser = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
+    SweetAlert.SweetNanya(
+      "Kamu Yakin ?",
+      "Data akan dihapus secara permanen"
+    ).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // sweet alert loading
-          Swal.fire({
-            title: "Loading...",
-            // html: "I will close in <b></b> milliseconds.",
-            timerProgressBar: true,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
+          SweetAlert.SweetLoading();
           await axios.delete(API_URL + `api/admin/user/${id}`, {
             withCredentials: true,
             headers: {
               Authorization: `${localStorage.getItem("token")}`,
             },
           });
-          Swal.close();
-          await Swal.fire({
-            icon: "success",
-            title: "Sukses Menghapus Data",
-          });
+          await SweetAlert.SweetOK("Data berhasil dihapus");
           getUsers();
         } catch (error) {
-          await Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error.response.data.error,
-          });
+          await SweetAlert.SweetError("Gagal", error.response.data.message);
         }
       }
     });

@@ -20,8 +20,8 @@ import {
 } from "@windmill/react-ui";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { API_URL } from "./Middleware/constants";
+import * as SweetAlert from "./Sweetalert2";
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -40,56 +40,33 @@ function Header() {
 
   const history = useHistory();
   const logout = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to Logout?",
-      icon: "answer",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          // sweet alert loading
-          Swal.fire({
-            title: "Loading...",
-            timerProgressBar: true,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
-          await axios.post(
-            API_URL + "api/logout",
-            {},
-            {
-              withCredentials: true,
-              headers: {
-                Authorization: `${localStorage.getItem("token")}`,
-              },
-              ContentType: "application/json",
-            }
-          );
-          await Swal.fire({
-            title: "Logout Success",
-            icon: "success",
-            showConfirmButton: true,
-          });
-          localStorage.removeItem("token");
-          localStorage.removeItem("data_user");
-          localStorage.removeItem("role");
-          history.push("/login");
-          window.location.reload();
-        } catch (error) {
-          Swal.fire({
-            title: "Logout Failed",
-            icon: "error",
-            showConfirmButton: true,
-            text: error.response.data.message,
-          });
+    SweetAlert.SweetNanya("Are u Sure?", "press ok if sure").then(
+      async (result) => {
+        if (result.isConfirmed) {
+          try {
+            SweetAlert.SweetLoading();
+            await axios.post(
+              API_URL + "api/logout",
+              {},
+              {
+                withCredentials: true,
+                headers: {
+                  Authorization: `${localStorage.getItem("token")}`,
+                },
+              }
+            );
+            await SweetAlert.SweetOK("Logout Success");
+            localStorage.removeItem("token");
+            localStorage.removeItem("data_user");
+            localStorage.removeItem("role");
+            history.push("/login");
+            window.location.reload();
+          } catch (error) {
+            SweetAlert.SweetError("Logout Failed", error.response.data.message);
+          }
         }
       }
-    });
+    );
   };
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">

@@ -103,7 +103,7 @@ function Login() {
                   <Input
                     className="mt-1"
                     type="email"
-                    placeholder="john@doe.com"
+                    placeholder="email@mail.com"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     required

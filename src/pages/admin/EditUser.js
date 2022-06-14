@@ -3,9 +3,9 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import PageTitle from "../../components/Typography/PageTitle";
 import { Input, Label, Select, Button } from "@windmill/react-ui";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { API_URL } from "../../components/Middleware/constants";
 import UsersAccess from "../../components/Middleware/BlockUsers";
+import * as SweetAlert from "../../components/Sweetalert2";
 
 function EditUser() {
   // block login and akses role
@@ -38,17 +38,8 @@ function EditUser() {
 
   const editUser = async (e) => {
     e.preventDefault();
-
     try {
-      // sweet alert loading
-      Swal.fire({
-        title: "Loading...",
-        // html: "I will close in <b></b> milliseconds.",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
+      SweetAlert.SweetLoading();
       await axios.put(
         API_URL + `api/admin/user/${id}`,
         {
@@ -65,17 +56,13 @@ function EditUser() {
           },
         }
       );
-      await Swal.fire({
-        icon: "success",
-        title: "Sukses Merubah Data",
-      });
+      await SweetAlert.SweetOK("Sukses Edit Data");
       history.push("/app/admin/user");
     } catch (error) {
-      await Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.response.data.message || "Terjadi Kesalahan",
-      });
+      await SweetAlert.SweetError(
+        "Gagal Edit Data",
+        error.response.data.message
+      );
     }
   };
 
