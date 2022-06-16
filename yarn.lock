@@ -1252,16 +1252,6 @@
   dependencies:
     chalk "^4.1.0"
 
-"@coreui/coreui@^4.1.6":
-  version "4.1.6"
-  resolved "https://registry.yarnpkg.com/@coreui/coreui/-/coreui-4.1.6.tgz#30302468b72da3274811f77dc77c5fd6db35d294"
-  integrity sha512-D+pXPTTWHGuNUaGTa+/KgCjGRH9vvdKKGKcYeE7PVwUwHg6xDgCS6TrPRWth76ELzayov6jiSBZ7ROzLkR/PDA==
-
-"@coreui/react@^4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@coreui/react/-/react-4.2.2.tgz#3e042c17ba3eafbfbd5d9b26ffb385be3991d250"
-  integrity sha512-9omQh1nei5UOoKsCvJYztwCuOpkCquQ4dAE5lSt/3TE6ZQea1D3CmecI5T9DOlTdY28JsOzFs/PBzEdkCt0J5A==
-
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz#00629c35a688e05a88b1cda684fb9d5e73f000a1"
@@ -1959,11 +1949,6 @@
     lodash "^4.17.11"
     mini-svg-data-uri "^1.0.3"
     traverse "^0.6.6"
-
-"@tawk.to/tawk-messenger-react@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@tawk.to/tawk-messenger-react/-/tawk-messenger-react-2.0.1.tgz#2e9bbfef47f81578aa49a7cd4d72191a0c3276a4"
-  integrity sha512-jMWbeOCMwqcjLCR7a9+mh0Ce/Cl9aPyfZAvzkNKCFKBYaV9n8eAE7U/XKKFqCKfp5AehDMUCB5saG2cFSSP0Xw==
 
 "@testing-library/dom@*":
   version "8.13.0"

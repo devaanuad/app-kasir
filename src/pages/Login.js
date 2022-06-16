@@ -4,7 +4,7 @@ import { GithubIcon, TwitterIcon } from "../icons";
 import { Label, Input, Button } from "@windmill/react-ui";
 import axios from "axios";
 import getCSRF from "../components/Middleware/GetCSRF";
-import Swal from "sweetalert2";
+import * as SweetAlert from "../components/Sweetalert2";
 import { API_URL } from "../components/Middleware/constants";
 
 function Login() {
@@ -36,25 +36,14 @@ function Login() {
     data.append("password", password);
 
     try {
-      // sweet alert loading
-      Swal.fire({
-        title: "Loading...",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
+      SweetAlert.SweetLoading();
       await axios
         .post(API_URL + "api/login", data, {
           withCredentials: true,
         })
         .then((res) => {
           if (res.status === 200) {
-            Swal.fire({
-              title: "Login Success",
-              icon: "success",
-              showConfirmButton: true,
-            });
+            SweetAlert.SweetOK("Login Berhasil");
             // set token, data user ,dan role ke local storage
             localStorage.setItem(
               "token",
@@ -75,13 +64,7 @@ function Login() {
           }
         });
     } catch (error) {
-      Swal.fire({
-        title: "Login Failed",
-        icon: "error",
-        showConfirmButton: false,
-        timer: 1500,
-        text: error.response.data.message,
-      });
+      SweetAlert.SweetError("Login Failed", error.response.data.message);
     }
   };
 

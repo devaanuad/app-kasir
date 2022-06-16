@@ -262,7 +262,7 @@ function User() {
             ))
           ) : (
             <div className="pos-center">
-              <div className="loader"></div>
+              <div className="loader" />
             </div>
           )}
         </Table>
