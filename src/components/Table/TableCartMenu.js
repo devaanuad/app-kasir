@@ -79,7 +79,10 @@ function TableCartMenu({ cartItems, onAdd, onRemove, onDelete }) {
         </Table>
         <TableFooter>
           <h1 className="text-md font-bold dark:text-white py-2 px-3 ">
-            Total Belanja : Rp {FormatRupiah(totalPrice)}
+            {totalPrice === 0
+              ? "Tidak Ada Item di Cart"
+              : `Total Belanja : Rp${" "}
+            ${FormatRupiah(totalPrice)}`}
           </h1>
         </TableFooter>
       </TableContainer>
