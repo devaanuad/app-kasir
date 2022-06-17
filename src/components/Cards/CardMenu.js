@@ -1,5 +1,6 @@
 import { CartIcon } from "../../icons";
 import React from "react";
+import { FormatRupiah } from "../Typography/FormatRupiah";
 
 function CardMenu({ menu, onAdd }) {
   return menu.map((item) => (
@@ -11,7 +12,9 @@ function CardMenu({ menu, onAdd }) {
       </div>
       <img className="object-cover w-full h-32 mt-2" src={item.gambar} />
       <div className="flex items-center justify-between px-4 py-2 dark:bg-gray-900">
-        <h1 className="text-xs font-bold dark:text-white">Rp 20.000</h1>
+        <h1 className="text-xs font-bold dark:text-white">
+          Rp {FormatRupiah(item.harga)}
+        </h1>
         <button
           onClick={() => onAdd(item)}
           title="Tambah ke Cart"

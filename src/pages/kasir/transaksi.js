@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import { API_URL } from "../../components/Middleware/constants";
 import { Link } from "react-router-dom";
 import CardMenu from "../../components/Cards/CardMenu";
+import SectionTitle from "../../components/Typography/SectionTitle";
+import TableCartMenu from "../../components/Table/TableCartMenu";
 
 function Transaksi() {
   // block login and akses role
@@ -101,7 +103,25 @@ function Transaksi() {
     }
   };
 
-  console.log(cartItems);
+  const onRemove = (product) => {
+    const exist = cartItems.find((x) => x.id === product.id);
+    if (exist.qty === 1) {
+      setCartItems(cartItems.filter((x) => x.id !== product.id));
+    } else {
+      setCartItems(
+        cartItems.map((x) =>
+          x.id === product.id ? { ...exist, qty: exist.qty - 1 } : x
+        )
+      );
+    }
+  };
+
+  const onDelete = (product) => {
+    const exist = cartItems.find((x) => x.id === product.id);
+    if (exist) {
+      setCartItems(cartItems.filter((x) => x.id !== product.id));
+    }
+  };
 
   return (
     <>
@@ -146,6 +166,15 @@ function Transaksi() {
           />
         </TableFooter>
       </Table>
+      {/* CARTTABEL */}
+
+      <SectionTitle>Cart</SectionTitle>
+      <TableCartMenu
+        cartItems={cartItems}
+        onRemove={onRemove}
+        onAdd={onAdd}
+        onDelete={onDelete}
+      />
     </>
   );
 }
