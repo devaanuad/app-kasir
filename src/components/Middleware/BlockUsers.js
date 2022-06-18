@@ -1,12 +1,13 @@
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import * as Secure from "./SecureLocalStorage";
 
 const UsersAccess = (roles) => {
   const History = useHistory();
-  const role = localStorage.getItem("role");
-  const login = localStorage.getItem("token");
+  const role = Secure.getItem("role");
+  const login = Secure.getItem("login");
 
-  if (login === "") {
+  if (login === null) {
     Swal.fire({
       title: "Login First",
       icon: "warning",

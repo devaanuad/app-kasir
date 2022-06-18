@@ -6,22 +6,22 @@ import Header from "../components/Header";
 import Main from "../containers/Main";
 import ThemedSuspense from "../components/ThemedSuspense";
 import { SidebarContext } from "../context/SidebarContext";
+import * as Secure from "../components/Middleware/SecureLocalStorage";
 
 const Page404 = lazy(() => import("../pages/404"));
 
-const role = localStorage.getItem("role");
-const routes =
-  role === "admin"
-    ? data.adminRoutes
-    : role === "kasir"
-    ? data.kasirRoutes
-    : role === "manager"
-    ? data.managerRoutes
-    : role === "undefined"
-    ? data.routes
-    : data.routes;
-
 function Layout() {
+  const role = Secure.getItem("role");
+
+  const routes =
+    role === "admin"
+      ? data.adminRoutes
+      : role === "kasir"
+      ? data.kasirRoutes
+      : role === "manager"
+      ? data.managerRoutes
+      : data.routes;
+
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   let location = useLocation();
 

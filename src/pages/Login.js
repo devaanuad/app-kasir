@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { GithubIcon, TwitterIcon } from "../icons";
 import { Label, Input, Button } from "@windmill/react-ui";
 import axios from "axios";
 import getCSRF from "../components/Middleware/GetCSRF";
 import * as SweetAlert from "../components/Sweetalert2";
 import { API_URL } from "../components/Middleware/constants";
+import * as Secure from "../components/Middleware/SecureLocalStorage";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const History = useHistory();
 
-  const tokens = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  const tokens = Secure.getItem("token");
+  const role = Secure.getItem("role");
   if (tokens) {
     role === "admin"
       ? History.push("/app/admin/dashboard")
@@ -45,15 +46,13 @@ function Login() {
           if (res.status === 200) {
             SweetAlert.SweetOK("Login Berhasil");
             // set token, data user ,dan role ke local storage
-            localStorage.setItem(
+            Secure.setItem(
               "token",
               res.data.data.token_type + " " + res.data.data.token
             );
-            localStorage.setItem(
-              "data_user",
-              JSON.stringify(res.data.data.user)
-            );
-            localStorage.setItem("role", res.data.data.user.role);
+            Secure.setItem("data_user", JSON.stringify(res.data.data.user));
+            Secure.setItem("role", res.data.data.user.role);
+
             if (res.data.data.user.role === "admin") {
               History.push("/app/admin/dashboard");
             } else if (res.data.data.user.role === "manager") {

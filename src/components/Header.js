@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "./Middleware/constants";
 import * as SweetAlert from "./Sweetalert2";
+import * as Secure from "./Middleware/SecureLocalStorage";
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -51,7 +52,7 @@ function Header() {
               {
                 withCredentials: true,
                 headers: {
-                  Authorization: `${localStorage.getItem("token")}`,
+                  Authorization: `${Secure.getItem("token")}`,
                 },
               }
             );

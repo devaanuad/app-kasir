@@ -6,6 +6,7 @@ import RoundIcon from "../../components/RoundIcon";
 import axios from "axios";
 import { API_URL } from "../../components/Middleware/constants";
 import UsersAccess from "../../components/Middleware/BlockUsers";
+import * as Secure from "../../components/Middleware/SecureLocalStorage";
 
 function Dashboard() {
   const [totalUsers, setTotalUsers] = useState(0);
@@ -17,7 +18,7 @@ function Dashboard() {
     const response = await axios.get(API_URL + "api/admin/user", {
       withCredentials: true,
       headers: {
-        Authorization: `${localStorage.getItem("token")}`,
+        Authorization: `${Secure.getItem("token")}`,
       },
     });
     return (

@@ -8,15 +8,13 @@ import {
   TableHeader,
   Input,
 } from "@windmill/react-ui";
-import { EditIcon, TrashIcon, SearchIcon, CartIcon } from "../../icons";
+import { SearchIcon } from "../../icons";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { API_URL } from "../../components/Middleware/constants";
-import { Link } from "react-router-dom";
 import CardMenu from "../../components/Cards/CardMenu";
 import SectionTitle from "../../components/Typography/SectionTitle";
 import TableCartMenu from "../../components/Table/TableCartMenu";
-
+import * as Secure from "../../components/Middleware/SecureLocalStorage";
 function Transaksi() {
   // block login and akses role
   UsersAccess("kasir");
@@ -42,7 +40,7 @@ function Transaksi() {
     const response = await axios.get(API_URL + "api/kasir/menu", {
       withCredentials: true,
       headers: {
-        Authorization: `${localStorage.getItem("token")}`,
+        Authorization: `${Secure.getItem("token")}`,
       },
     });
     setDataMenu(response.data.data);
@@ -175,6 +173,22 @@ function Transaksi() {
         onAdd={onAdd}
         onDelete={onDelete}
       />
+      <div className="flex justify-center">
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefault"
+          />
+          <label
+            className="form-check-label inline-block text-gray-800"
+            htmlFor="flexSwitchCheckDefault"
+          >
+            Default switch checkbox input
+          </label>
+        </div>
+      </div>
     </>
   );
 }

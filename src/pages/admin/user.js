@@ -24,6 +24,7 @@ import axios from "axios";
 import { API_URL } from "../../components/Middleware/constants";
 import UsersAccess from "../../components/Middleware/BlockUsers";
 import * as SweetAlert from "../../components/Sweetalert2";
+import * as Secure from "../../components/Middleware/SecureLocalStorage";
 
 function User() {
   // block login and akses role
@@ -49,7 +50,7 @@ function User() {
     const response = await axios.get(API_URL + "api/admin/user", {
       withCredentials: true,
       headers: {
-        Authorization: `${localStorage.getItem("token")}`,
+        Authorization: `${Secure.getItem("token")}`,
       },
     });
     setUsers(response.data.data);
@@ -132,7 +133,7 @@ function User() {
       await axios.post(API_URL + "api/admin/user/create", formData, {
         withCredentials: true,
         headers: {
-          Authorization: `${localStorage.getItem("token")}`,
+          Authorization: `${Secure.getItem("token")}`,
         },
       });
       await SweetAlert.SweetOK("Data berhasil ditambahkan");
@@ -161,7 +162,7 @@ function User() {
           await axios.delete(API_URL + `api/admin/user/${id}`, {
             withCredentials: true,
             headers: {
-              Authorization: `${localStorage.getItem("token")}`,
+              Authorization: `${Secure.getItem("token")}`,
             },
           });
           await SweetAlert.SweetOK("Data berhasil dihapus");
@@ -216,7 +217,7 @@ function User() {
           {loading ? (
             dataTable2.map((user) => (
               <TableBody>
-                <TableRow key={user.id}>
+                <TableRow key={user}>
                   <TableCell>
                     <div className="flex items-center text-sm">
                       <div>

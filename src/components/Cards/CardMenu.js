@@ -5,7 +5,7 @@ import { FormatRupiah } from "../Typography/FormatRupiah";
 function CardMenu({ menu, onAdd }) {
   return menu.map((item) => (
     <div className="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 mt-3 mb-3 w-40">
-      <div className="px-4 py-2">
+      <div className="px-4 py-2" key={item}>
         <h1 className="text-3md text-center font-bold text-gray-800 uppercase dark:text-white">
           {item.nama_menu}
         </h1>

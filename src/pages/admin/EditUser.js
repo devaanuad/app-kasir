@@ -6,6 +6,7 @@ import axios from "axios";
 import { API_URL } from "../../components/Middleware/constants";
 import UsersAccess from "../../components/Middleware/BlockUsers";
 import * as SweetAlert from "../../components/Sweetalert2";
+import * as Secure from "../../components/Middleware/SecureLocalStorage";
 
 function EditUser() {
   // block login and akses role
@@ -28,7 +29,7 @@ function EditUser() {
     const response = await axios.get(API_URL + `api/admin/user/${id}`, {
       withCredentials: true,
       headers: {
-        Authorization: `${localStorage.getItem("token")}`,
+        Authorization: `${Secure.getItem("token")}`,
       },
     });
     seteditName(response.data.data.name);
@@ -52,7 +53,7 @@ function EditUser() {
         {
           withCredentials: true,
           headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `${Secure.getItem("token")}`,
           },
         }
       );

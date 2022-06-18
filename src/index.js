@@ -6,8 +6,6 @@ import { SidebarProvider } from "./context/SidebarContext";
 import ThemedSuspense from "./components/ThemedSuspense";
 import { Windmill } from "@windmill/react-ui";
 import "./components/loaderSpinners.css";
-import axios from "axios";
-axios.defaults.withCredentials = true;
 ReactDOM.render(
   <SidebarProvider>
     <Suspense fallback={<ThemedSuspense />}>
