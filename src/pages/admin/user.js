@@ -216,8 +216,8 @@ function User() {
           </TableHeader>
           {loading ? (
             dataTable2.map((user) => (
-              <TableBody>
-                <TableRow key={user}>
+              <TableBody key={user.id}>
+                <TableRow>
                   <TableCell>
                     <div className="flex items-center text-sm">
                       <div>
@@ -262,9 +262,15 @@ function User() {
               </TableBody>
             ))
           ) : (
-            <div className="pos-center">
-              <div className="loader" />
-            </div>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <div className="pos-center">
+                    <div className="loader" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           )}
         </Table>
         <TableFooter>

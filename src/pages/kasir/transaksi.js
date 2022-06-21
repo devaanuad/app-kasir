@@ -7,6 +7,7 @@ import {
   Table,
   TableHeader,
   Input,
+  TableCell,
 } from "@windmill/react-ui";
 import { SearchIcon } from "../../icons";
 import axios from "axios";
@@ -142,9 +143,9 @@ function Transaksi() {
       </div>
       <Table>
         <TableHeader>
-          <h1 className="text-md font-bold dark:text-white py-2 px-3 ">
-            List Menu
-          </h1>
+          <tr>
+            <TableCell>List Menu</TableCell>
+          </tr>
         </TableHeader>
         {loading ? (
           <div className="flex flex-wrap gap-10">
