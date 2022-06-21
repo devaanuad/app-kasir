@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { SidebarContext } from "../context/SidebarContext";
 import {
-  SearchIcon,
   MoonIcon,
   SunIcon,
   BellIcon,
@@ -13,7 +12,6 @@ import {
 import {
   Avatar,
   Badge,
-  Input,
   Dropdown,
   DropdownItem,
   WindmillContext,
@@ -23,32 +21,9 @@ import axios from "axios";
 import { API_URL } from "./Middleware/constants";
 import * as SweetAlert from "./Sweetalert2";
 import * as Secure from "./Middleware/SecureLocalStorage";
-import * as data from "../routes/sidebar";
-import * as Icons from "../icons";
-function Header() {
-  // search menu bar
-  const role = Secure.getItem("role");
-  const routes =
-    role === "admin"
-      ? data.routesadmin
-      : role === "kasir"
-      ? data.routeskasir
-      : role === "manager"
-      ? data.routesmanager
-      : data.routes;
-  const [searchMenu, setSearchMenu] = useState("");
-  const [dataMenu, setDataMenu] = useState([]);
-  useEffect(() => {
-    setDataMenu(
-      routes.filter((item) => item.name.toLowerCase().includes(searchMenu))
-    );
-  }, [searchMenu]);
-  // End search menu bar
-  function Icon({ icon, ...props }) {
-    const Icon = Icons[icon];
-    return <Icon {...props} />;
-  }
+import SearchMenu from "./Search/SearchMenu";
 
+function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
   const { toggleSidebar } = useContext(SidebarContext);
 
@@ -105,42 +80,7 @@ function Header() {
           <MenuIcon className="w-6 h-6" aria-hidden="true" />
         </button>
         {/* <!-- Search input --> */}
-        <div className="flex justify-center flex-1 lg:mr-32">
-          <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
-            <div className="absolute inset-y-0 flex items-center pl-2">
-              <SearchIcon className="w-4 h-4" aria-hidden="true" />
-            </div>
-            <Input
-              className="pl-8 text-gray-700"
-              placeholder="Search Menu Here..."
-              aria-label="Search"
-              onChange={(e) => setSearchMenu(e.target.value)}
-            />
-            {/* search menu  */}
-            {searchMenu == "" ? (
-              <></>
-            ) : (
-              dataMenu.map((item) => (
-                <div className="absolute inline-block w-full " key={item.name}>
-                  <div className=" right-0 z-20 py-2  bg-white rounded-md shadow-xl dark:bg-gray-800">
-                    <a
-                      href={item.path}
-                      className="flex items-center px-3 py-3 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                      <Icon
-                        className="w-5 h-5 mx-1"
-                        aria-hidden="true"
-                        icon={item.icon}
-                      />
-                      <span className="mx-1">{item.name}</span>
-                    </a>
-                  </div>
-                </div>
-              ))
-            )}
-            {/* end search menu */}
-          </div>
-        </div>
+        <SearchMenu />
         {/* END SEARCH */}
         <ul className="flex items-center flex-shrink-0 space-x-6">
           {/* <!-- Theme toggler --> */}
