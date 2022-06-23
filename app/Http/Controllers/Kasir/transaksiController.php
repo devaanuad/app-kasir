@@ -59,7 +59,7 @@ class transaksiController extends Controller
         $user = $request->user();
         if ($user->tokenCan('kasir_token')) {
             $validator = Validator::make($request->all(), [
-                'transaksi_id' => 'required',
+                'no_transaksi' => 'required',
                 'meja_id' => 'required',
                 'user_id' => 'required',
                 'total_bayar' => 'required|numeric',
@@ -75,7 +75,7 @@ class transaksiController extends Controller
 
             try {
                 $transaksi = Transaksi::create([
-                    'transaksi_id' => $request->transaksi_id,
+                    'no_transaksi' => $request->no_transaksi,
                     'meja_id' => $request->meja_id,
                     'user_id' => $request->user_id,
                     'total_bayar' => $request->total_bayar,
