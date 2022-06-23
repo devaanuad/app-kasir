@@ -16,6 +16,8 @@ const admin_user = lazy(() => import("../pages/admin/user"));
 const admin_edit_user = lazy(() => import("../pages/admin/EditUser"));
 
 const kasir_transaksi = lazy(() => import("../pages/kasir/transaksi"));
+
+const manager_menu = lazy(() => import("../pages/manager/menu"));
 /**
  * ⚠ These are internal routes!
  * They will be rendered inside the app, using the default `containers/Layout`.
@@ -92,7 +94,7 @@ export const kasirRoutes = [
 // path for manager
 export const managerRoutes = [
   {
-    path: "/forms",
-    component: Forms,
+    path: "/manager/menu",
+    component: manager_menu,
   },
 ];

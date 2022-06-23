@@ -5,7 +5,7 @@ import * as Secure from "./SecureLocalStorage";
 const UsersAccess = (roles) => {
   const History = useHistory();
   const role = Secure.getItem("role");
-  const login = Secure.getItem("login");
+  const login = Secure.getItem("token");
 
   if (login === null) {
     Swal.fire({
@@ -17,6 +17,7 @@ const UsersAccess = (roles) => {
     });
   } else if (role !== roles) {
     History.push("/login");
+
     // Swal.fire({
     //   icon: "warning",
     //   title: "Oops...",

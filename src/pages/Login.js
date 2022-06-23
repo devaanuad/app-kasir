@@ -19,10 +19,12 @@ function Login() {
     role === "admin"
       ? History.push("/app/admin/dashboard")
       : role === "kasir"
-      ? History.push("/app/kasir/transaksi")
+      ? History.push("/app/kasir/dashboard")
       : role === "manager"
       ? History.push("/app/manager/dashboard")
       : History.push("/login");
+  } else if (tokens === null) {
+    History.push("/login");
   }
 
   // panggil untuk buka blokiran csrf token

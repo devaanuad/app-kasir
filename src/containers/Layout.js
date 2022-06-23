@@ -12,6 +12,7 @@ const Page404 = lazy(() => import("../pages/404"));
 
 function Layout() {
   const role = Secure.getItem("role");
+  const cekToken = Secure.getItem("token");
 
   const routes =
     role === "admin"
@@ -35,10 +36,13 @@ function Layout() {
         isSidebarOpen && "overflow-hidden"
       }`}
     >
-      <Sidebar />
+      {/* hilangan sidebar jika token null */}
+      {cekToken == "" ? <></> : <Sidebar />}
 
       <div className="flex flex-col flex-1 w-full">
-        <Header />
+        {/* hilangkan header jika tidak token null */}
+        {cekToken == "" ? <></> : <Header />}
+
         <Main>
           <Suspense fallback={<ThemedSuspense />}>
             <Switch>

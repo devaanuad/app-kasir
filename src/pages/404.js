@@ -16,7 +16,7 @@ function Page404() {
         Page not found. Check the address or{" "}
         <a
           className="text-purple-600 hover:underline dark:text-purple-300"
-          href="../index.html"
+          href="/login"
         >
           go back
         </a>
