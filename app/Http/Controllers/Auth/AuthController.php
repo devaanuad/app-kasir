@@ -28,6 +28,7 @@ class AuthController extends Controller
         try {
 
             $user = User::where('email', $req->email)->first();
+
             if (empty($user)) {
                 return response()->json([
                     'message' => 'Email tidak ditemukan'
